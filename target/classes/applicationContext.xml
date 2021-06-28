@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	  http://www.springframework.org/schema/oxm  
+	  http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd" >
+	
+	<!-- jaxb -->  
+	<oxm:jaxb2-marshaller id="jaxbMarshallerBean">
+		<oxm:class-to-be-bound name="com.pouchen.roy.oxm.JaxbEmployee"/>		
+	</oxm:jaxb2-marshaller>
+	
+	<!-- xStream -->
+	<bean id="xstreamMarshallerBean" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="annotatedClasses" value="com.pouchen.roy.oxm.XstreamEmployee"></property>
+	</bean>
+	
+	<!-- Creating the DI to the Mail Class -->
+	
+	<bean id= "mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"></property>
+		<property name="username" value="w983874@gmail.com"></property>
+		<property name="password" value="w0031303130"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.socketFactory.port">465</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.port">465</prop>
+			</props>
+		</property>
+	</bean>
+	
+
+	<bean id="Mail" class="com.pouchen.roy.mail.Mail">
+		<property name="mailSender" ref="mailSender"></property>
+	</bean>
+	
+	<bean id="AttachMail" class="com.pouchen.roy.mail.AttachMail">
+		<property name="mailSender" ref="mailSender"></property>
+	</bean>
+	
+</beans>
